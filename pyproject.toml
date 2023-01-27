@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reviews-classification"
+version = "0.1.0"
+dependencies = [
+  "ray[default]>=2.2.0",
+  "scikit-learn>=1.2.0",
+  "numpy>=1.24.1",
+  "dask>=2023.1.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.2.1", "pytest-cov>=4.0.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["reviewsclassifier"]
+namespaces = false

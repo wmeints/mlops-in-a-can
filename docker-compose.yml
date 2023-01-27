@@ -1,0 +1,44 @@
+services:
+  mlflow:
+    image: willemmeints/mlflow:2.1.1
+    environment:
+      DB_HOST: database
+      DB_NAME: mlflow
+      DB_USER: postgres
+      DB_PASS: ${DB_PASSWORD}
+      DB_PORT: 5432
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+  prefect:
+    image: willemmeints/workflow-controller:latest
+    environment:
+      DB_HOST: database
+      DB_NAME: prefect
+      DB_USER: postgres
+      DB_PASS: ${DB_PASSWORD}
+      DB_PORT: 5432
+    ports:
+      - 4200:4200
+    depends_on:
+      - database
+  prefect_worker:
+    image: willemmeints/workflow-agent:latest
+    environment:
+      PREFECT_API_URL: http://prefect:4200/api
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      QUEUE_NAME: default
+    depends_on:
+      - prefect
+  database:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgres/data/pgdata
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/volumes/postgres/init:/docker-entrypoint-initdb.d/
+      - ./docker/volumes/postgres/data:/var/lib/postgres/data/pgdata
