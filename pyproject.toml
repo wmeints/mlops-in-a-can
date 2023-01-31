@@ -6,24 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "reviews-classification"
 version = "0.1.0"
 dependencies = [
-  "ray[default]>=2.2.0",
-  "scikit-learn>=1.2.0",
-  "numpy>=1.24.1",
-  "dask>=2023.1.0",
-  "dask[dataframe]>=2023.1.0",
-  "s3fs>=2023.1.0",
-  "python-dotenv>=0.21",
-  "sqlalchemy>=1.4.0,<2.0",
-  "hvplot>=0.8.2",
-  "pyparsing>=3.0.0",
-  "whylogs[fugue]>=1.1.23",
-  "whylogs[fiz]>=1.1.23",
+  
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=7.2.1", "pytest-cov>=4.0.0"]
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["reviewsclassifier"]
 namespaces = false

@@ -1,0 +1,11 @@
+notebooks/
+docker/**/*
+.venv/
+.vscode/
+deployment/
+.env
+docker-compose.yml
+pyproject.toml
+*.egg-info
+.git
+__pycache__

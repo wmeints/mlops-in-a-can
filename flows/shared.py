@@ -4,7 +4,7 @@ from prefect.blocks.system import Secret
 from prefect.blocks.system import String
 
 
-def get_secret_value(name: str) -> str:
+async def get_secret_value(name: str) -> str:
     """Gets a secret value from the prefect or your local environment.
 
     Args:
@@ -13,15 +13,15 @@ def get_secret_value(name: str) -> str:
     Returns:
         str: The value for the secret. None if it wasn't configured or available.
     """
-    load_dotenv()
-    
     if getenv('PREFECT_API_URL') is not None:
-        return Secret.load(name)
+        result = await Secret.load(name)
+        return result.value.get_secret_value()
     else:
+        load_dotenv()
         return getenv(name.replace('-', '_').upper())
 
 
-def get_config_value(name: str) -> str:
+async def get_config_value(name: str) -> str:
     """Gets a config value from the prefect or your local environment.
 
     Args:
@@ -31,6 +31,8 @@ def get_config_value(name: str) -> str:
         str: The value for the configuration variable. None if it wasn't configured or available.
     """
     if getenv('PREFECT_API_URL') is not None:
-        return String.load(name)
+        result = await String.load(name)
+        return result.value
     else:
+        load_dotenv()
         return getenv(name.replace('-', '_').upper())
