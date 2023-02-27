@@ -16,7 +16,6 @@ services:
     depends_on:
       - database
   workflow_server:
-    name: workflow_server
     image: mlops-in-a-can/workflow-server:latest
     build:
       context: docker/images/workflow-server
@@ -33,7 +32,7 @@ services:
       - 4200:4200
     depends_on:
       - database
-  prefect_worker:
+  workflow_agent:
     image: mlops-in-a-can/workflow-agent
     build:
       context: docker/images/workflow-agent
@@ -45,7 +44,7 @@ services:
       QUEUE_NAME: default
       EXTRA_PIP_PACKAGES: "prefect_aws s3fs mlflow==2.1.1 python-dotenv==0.21.1 pandas==1.5.3 scikit-learn==1.2.1"
     depends_on:
-      - prefect
+      - workflow_server
   database:
     image: postgres:14
     networks:
