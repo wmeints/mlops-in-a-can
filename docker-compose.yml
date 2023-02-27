@@ -64,14 +64,10 @@ services:
         aliases:
           - datalake
           - localhost
-    image: bitnami/minio:latest
+    image: mcr.microsoft.com/azure-storage/azurite
     ports:
-      - 9000:9000
-      - 9001:9001
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      MINIO_DEFAULT_BUCKETS: "raw,intermediate,cleaned,archive,flows"
+      - 10000:10000
+      - 10001:10001
     volumes:
       - minio_data:/data
 volumes:
