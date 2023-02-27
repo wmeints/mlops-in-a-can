@@ -15,8 +15,11 @@ services:
       - 5000:5000
     depends_on:
       - database
-  prefect:
-    image: willemmeints/workflow-controller:latest
+  workflow_server:
+    name: workflow_server
+    image: mlops-in-a-can/workflow-server:latest
+    build:
+      context: docker/images/workflow-server
     networks:
       mlops:
     environment:
@@ -31,7 +34,9 @@ services:
     depends_on:
       - database
   prefect_worker:
-    image: willemmeints/workflow-agent:latest
+    image: mlops-in-a-can/workflow-agent
+    build:
+      context: docker/images/workflow-agent
     networks:
       mlops:
     environment:
