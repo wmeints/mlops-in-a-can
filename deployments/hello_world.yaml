@@ -1,0 +1,52 @@
+###
+### A complete description of a Prefect Deployment for flow 'main'
+###
+name: hello_world
+description: null
+version: bd6b82144496b2dfd27d5a784c18d1b4
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: main
+manifest_path: null
+storage:
+  bucket_path: flows
+  azure_storage_connection_string: '**********'
+  azure_storage_account_name: null
+  azure_storage_account_key: null
+  azure_storage_tenant_id: null
+  azure_storage_client_id: null
+  azure_storage_client_secret: null
+  _block_document_id: 386d1eeb-6aa0-4cec-a12f-8e9a89a2470a
+  _block_document_name: flows
+  _is_anonymous: false
+  block_type_slug: azure
+  _block_type_slug: azure
+path: ''
+entrypoint: flows\helloworld.py:main
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
+timestamp: '2023-03-02T19:15:17.992845+00:00'

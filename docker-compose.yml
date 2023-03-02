@@ -27,8 +27,22 @@ services:
       PREFECT_LOGGING_SERVER_LEVEL: WARNING
     ports:
       - 4200:4200
+    healthcheck:
+      test: curl -f http://localhost:4200/api || exit 1
+      interval: 1s
+      retries: 30
     depends_on:
       - database
+  workflow_server_init:
+    image: mlops-in-a-can/workflow-server-init:latest
+    build:
+      context: docker/images/workflow-server-init
+    depends_on:
+      workflow_server:
+        condition: service_healthy
+    environment:
+      AZURE_CONNECTION_STRING: ${DATALAKE_CONNECTION_STRING}
+      PREFECT_API_URL: http://workflow_server:4200/api
   workflow_agent:
     image: mlops-in-a-can/workflow-agent
     build:
@@ -65,15 +79,12 @@ services:
       interval: 1s
       retries: 30
   datalake_init:
-    image: mcr.microsoft.com/azure-cli:latest
+    image: mlops-in-a-can/datalake-init:latest
+    build:
+      context: docker/images/datalake-init
     depends_on:
       datalake:
         condition: service_healthy
-    command:
-      - /bin/sh
-      - -c 
-      - |
-        az storage container create --name flows
     environment:
       AZURE_STORAGE_CONNECTION_STRING: ${DATALAKE_CONNECTION_STRING}
 volumes:
