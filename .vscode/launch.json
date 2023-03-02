@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Deploy blocks",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "module": "deployment.deploy_blocks",
-            "justMyCode": true,
-            "cwd": "${workspaceFolder}"
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }
