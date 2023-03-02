@@ -3,8 +3,6 @@ networks:
 services:
   mlflow:
     image: willemmeints/mlflow:2.1.1
-    networks:
-      mlops:
     environment:
       DB_HOST: database
       DB_NAME: mlflow
@@ -19,8 +17,6 @@ services:
     image: mlops-in-a-can/workflow-server:latest
     build:
       context: docker/images/workflow-server
-    networks:
-      mlops:
     environment:
       DB_HOST: database
       DB_NAME: prefect
@@ -28,6 +24,7 @@ services:
       DB_PASS: ${DB_PASSWORD}
       DB_PORT: 5432
       EXTRA_PIP_PACKAGES: "prefect_aws"
+      PREFECT_LOGGING_SERVER_LEVEL: WARNING
     ports:
       - 4200:4200
     depends_on:
@@ -36,13 +33,11 @@ services:
     image: mlops-in-a-can/workflow-agent
     build:
       context: docker/images/workflow-agent
-    networks:
-      mlops:
     environment:
-      PREFECT_API_URL: http://prefect:4200/api
+      PREFECT_API_URL: http://workflow_server:4200/api
       MLFLOW_TRACKING_URI: http://mlflow:5000
       QUEUE_NAME: default
-      EXTRA_PIP_PACKAGES: "prefect_aws s3fs mlflow==2.1.1 python-dotenv==0.21.1 pandas==1.5.3 scikit-learn==1.2.1"
+      EXTRA_PIP_PACKAGES: "prefect_azure adlfs mlflow==2.1.1 python-dotenv==0.21.1 pandas==1.5.3 scikit-learn==1.2.1"
     depends_on:
       - workflow_server
   database:
@@ -59,17 +54,28 @@ services:
       - ./docker/volumes/postgres/init:/docker-entrypoint-initdb.d/
       - postgres_data:/var/lib/postgres/data/pgdata
   datalake:
-    networks:
-      mlops:
-        aliases:
-          - datalake
-          - localhost
     image: mcr.microsoft.com/azure-storage/azurite
     ports:
       - 10000:10000
       - 10001:10001
     volumes:
-      - minio_data:/data
+      - azurite_data:/data
+    healthcheck:
+      test: nc 127.0.0.1 10000 -z
+      interval: 1s
+      retries: 30
+  datalake_init:
+    image: mcr.microsoft.com/azure-cli:latest
+    depends_on:
+      datalake:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c 
+      - |
+        az storage container create --name flows
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: ${DATALAKE_CONNECTION_STRING}
 volumes:
-  minio_data:
   postgres_data:
+  azurite_data:
