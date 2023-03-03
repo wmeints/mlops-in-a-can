@@ -168,3 +168,6 @@ poetry.toml
 .env
 .venv/
 deployments/*.yaml
+mlruns/
+models/
+data/
