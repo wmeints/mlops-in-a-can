@@ -2,6 +2,7 @@ import asyncio
 from os import makedirs
 
 import mlflow
+from mlflow.models import infer_signature
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -61,9 +62,12 @@ async def train_model(num_estimators: int) -> RandomForestClassifier:
 
         makedirs('models/classifier', exist_ok=True)
 
+        model_signature = infer_signature(features_test, model.predict(features_test))
+
         mlflow.sklearn.save_model(
             model, "models/classifier",
-            pip_requirements=["scikit-learn", "pandas"])
+            pip_requirements=["scikit-learn", "pandas"],
+            signature=model_signature)
 
         mlflow.log_artifacts('models/classifier', 'model')
         mlflow.register_model(f'runs:/{run.info.run_id}/model', 'iris_classifier')
@@ -76,4 +80,4 @@ async def train(num_estimators: int = 100):
 
 
 if __name__ == "__main__":
-    asyncio.run(train(100))
+    asyncio.run(train(1))
