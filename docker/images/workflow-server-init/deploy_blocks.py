@@ -25,8 +25,6 @@ async def deploy_azure_flows_block():
     if connection_string == "":
         print("AZURE_CONNECTION_STRING environment variable not set.")
         exit(1)
-    else:
-        print(connection_string)
 
     print("Deploying Azure flows block to Prefect...")
 
