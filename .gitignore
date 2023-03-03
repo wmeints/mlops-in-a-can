@@ -166,3 +166,5 @@ poetry.toml
 
 # Secrets
 .env
+.venv/
+deployments/*.yaml
