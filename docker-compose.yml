@@ -51,7 +51,7 @@ services:
       PREFECT_API_URL: http://workflow_server:4200/api
       MLFLOW_TRACKING_URI: http://mlflow:5000
       QUEUE_NAME: default
-      EXTRA_PIP_PACKAGES: "prefect_azure adlfs mlflow==2.1.1 python-dotenv==0.21.1 pandas==1.5.3 scikit-learn==1.2.1"
+      EXTRA_PIP_PACKAGES: "prefect_azure adlfs mlflow==2.2.1 python-dotenv==0.21.1 pandas==1.5.3 scikit-learn==1.2.1"
     depends_on:
       - workflow_server
   database:
