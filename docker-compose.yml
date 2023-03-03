@@ -56,8 +56,6 @@ services:
       - workflow_server
   database:
     image: postgres:14
-    networks:
-      mlops:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
