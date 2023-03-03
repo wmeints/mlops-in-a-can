@@ -3,7 +3,7 @@
 Welcome to the MLOps in a can repository. This repository contains a basic MLOps environment that you can deploy with
 a single command. 
 
-## :goal: Goal of this repository
+## :checkered_flag: Goal of this repository
 
 The main objective of this repository is to educate and enlighten people about MLOps and the significance of introducing
 quality engineering to the working field of machine-learning and data science.
