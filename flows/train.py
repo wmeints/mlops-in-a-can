@@ -1,16 +1,16 @@
 import asyncio
 from os import makedirs
 
-import mlflow
-from mlflow.models import infer_signature
-import pandas as pd
 import matplotlib.pyplot as plt
+import mlflow
+import pandas as pd
 import seaborn as sns
+from mlflow.models import infer_signature
 from prefect import flow, task
 from prefect.filesystems import Azure
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (confusion_matrix, f1_score, precision_score, recall_score)
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score
 
 
 def get_or_create_experiment() -> str:
